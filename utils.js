@@ -1,10 +1,10 @@
 // baseline estimates, used to improve performance
-var TX_EMPTY_SIZE = 4 + 1 + 1 + 4
-var TX_INPUT_BASE = 32 + 4 + 1 + 4
-var TX_INPUT_PUBKEYHASH = 107
-var TX_INPUT_SEGWIT = 34
-var TX_OUTPUT_BASE = 8 + 1
-var TX_OUTPUT_PUBKEYHASH = 25
+const TX_EMPTY_SIZE = 4 + 1 + 1 + 4
+const TX_INPUT_BASE = 32 + 4 + 1 + 4
+const TX_INPUT_PUBKEYHASH = 107
+const TX_INPUT_SEGWIT = 34
+const TX_OUTPUT_BASE = 8 + 1
+const TX_OUTPUT_PUBKEYHASH = 25
 
 function inputBytes (input) {
   const isSegwit = `${input.address}`.startsWith('bc1')
@@ -47,19 +47,19 @@ function sumOrNaN (range) {
   return range.reduce(function (a, x) { return a + uintOrNaN(x.value) }, 0)
 }
 
-var BLANK_OUTPUT = outputBytes({})
+const BLANK_OUTPUT = outputBytes({})
 
 function finalize (inputs, outputs, feeRate) {
-  var bytesAccum = transactionBytes(inputs, outputs)
-  var feeAfterExtraOutput = feeRate * (bytesAccum + BLANK_OUTPUT)
-  var remainderAfterExtraOutput = sumOrNaN(inputs) - (sumOrNaN(outputs) + feeAfterExtraOutput)
+  const bytesAccum = transactionBytes(inputs, outputs)
+  const feeAfterExtraOutput = feeRate * (bytesAccum + BLANK_OUTPUT)
+  const remainderAfterExtraOutput = sumOrNaN(inputs) - (sumOrNaN(outputs) + feeAfterExtraOutput)
 
   // is it worth a change output?
   if (remainderAfterExtraOutput > dustThreshold({}, feeRate)) {
     outputs = outputs.concat({ value: remainderAfterExtraOutput })
   }
 
-  var fee = sumOrNaN(inputs) - sumOrNaN(outputs)
+  const fee = sumOrNaN(inputs) - sumOrNaN(outputs)
   if (!isFinite(fee)) return { fee: feeRate * bytesAccum }
 
   return {
