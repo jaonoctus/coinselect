@@ -45,6 +45,5 @@
     "nyc": "^15.0.0",
     "standard": "*",
     "tape": "^4.5.1"
-  },
-  "dependencies": {}
+  }
 }
