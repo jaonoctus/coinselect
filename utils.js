@@ -7,7 +7,7 @@ const TX_OUTPUT_BASE = 8 + 1
 const TX_OUTPUT_PUBKEYHASH = 25
 
 function inputBytes (input) {
-  const isSegwit = `${input.address}`.startsWith('bc1')
+  const isSegwit = input.script && input.script.isSegwit
 
   if (isSegwit) {
     return TX_INPUT_SEGWIT
